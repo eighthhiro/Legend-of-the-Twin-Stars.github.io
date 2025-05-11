@@ -4,6 +4,7 @@ class Game {
     constructor() {
         // Get the game container
         this.container = document.getElementById('game-container');
+        this.gameModal = new GameModal();
         
         // Game state
         this.isRunning = false;
@@ -84,7 +85,7 @@ class Game {
     handleHouseEntry() {
         // Check if player is near the door
         if (this.player.nearDoor) {
-            showMessage("Welcome to your home! (Interior not implemented yet)");
+            this.gameModal.showModal();
             // In a full game, this could trigger a scene change or interior view
         }
     }
