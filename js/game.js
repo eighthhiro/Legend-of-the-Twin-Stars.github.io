@@ -9,8 +9,39 @@ class Game {
         this.isRunning = false;
         this.lastTimestamp = 0;
         
-        // Initialize game components
-        this.initialize();
+        // Start by loading assets, then initialize
+        this.preloadAssets()
+            .then(() => {
+                this.initialize();
+            })
+            .catch(error => {
+                console.error('Failed to load game assets:', error);
+                // Still try to initialize with fallback assets
+                this.initialize();
+            });
+    }
+    
+    // Preload game assets
+    async preloadAssets() {
+        // Create promises for each image to load
+        const imagePromises = [
+            this.loadImage('./assets/idle.png'),
+            this.loadImage('./assets/walk.png')
+        ];
+        
+        // Wait for all images to load
+        await Promise.all(imagePromises);
+        console.log('All player animation assets loaded');
+    }
+    
+    // Helper to load an image and return a promise
+    loadImage(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+            img.src = src;
+        });
     }
     
     // Initialize the game
@@ -94,8 +125,8 @@ class Game {
     
     // Update game state
     update(deltaTime) {
-        // Update player
-        this.player.update(deltaTime / 1000, this.collisionSystem);
+        // Update player - passing deltaTime directly for animation timing
+        this.player.update(deltaTime, this.collisionSystem);
         
         // Update UI
         this.ui.updateDebugInfo(this.player);

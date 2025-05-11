@@ -1,5 +1,4 @@
-// Player class and controls
-
+// Player class with sprite animation
 class Player {
     constructor(x, y, width, height) {
         this.x = x;
@@ -8,8 +7,32 @@ class Player {
         this.height = height;
         this.speed = CONFIG.player.speed;
         this.element = null;
+        this.spriteElement = null;
         this.direction = { x: 0, y: 0 };
         this.isMoving = false;
+        this.facing = 'right'; // Default facing direction
+        
+        // Animation states
+        this.animationState = 'idle';
+        this.animationFrame = 0;
+        this.animationTimer = 0;
+        this.animationSpeed = 150; // milliseconds per frame
+        
+        // Sprite frames configuration
+        this.sprites = {
+            idle: {
+                frames: 4,
+                width: 32,
+                height: 32,
+                src: './assets/idle.png'
+            },
+            walk: {
+                frames: 4,
+                width: 32,
+                height: 32,
+                src: './assets/walk.png'
+            }
+        };
         
         // Input state
         this.keys = {
@@ -25,6 +48,7 @@ class Player {
     
     // Create the DOM element for the player
     createElement() {
+        // Create main player container
         this.element = document.createElement('div');
         this.element.className = 'player';
         this.element.style.left = `${this.x}px`;
@@ -32,7 +56,61 @@ class Player {
         this.element.style.width = `${this.width}px`;
         this.element.style.height = `${this.height}px`;
         
+        // Create sprite element inside player
+        this.spriteElement = document.createElement('div');
+        this.spriteElement.className = 'player-sprite';
+        this.element.appendChild(this.spriteElement);
+        
+        // Set initial animation state
+        this.setAnimation('idle');
+        
         return this.element;
+    }
+    
+    // Set player animation state
+    setAnimation(state) {
+        if (this.animationState !== state) {
+            this.animationState = state;
+            this.animationFrame = 0;
+            this.animationTimer = 0;
+            this.updateSpriteImage();
+        }
+    }
+    
+    // Update the sprite image based on current animation frame
+    updateSpriteImage() {
+        if (!this.spriteElement) return;
+        
+        const sprite = this.sprites[this.animationState];
+        
+        // Set background image based on animation state
+        this.spriteElement.style.backgroundImage = `url(${sprite.src})`;
+        
+        // Calculate background position based on current frame
+        const frameWidth = sprite.width;
+        const backgroundX = -(this.animationFrame * frameWidth);
+        
+        this.spriteElement.style.backgroundPosition = `${backgroundX}px 0px`;
+        
+        // Apply flip if facing left
+        if (this.facing === 'left') {
+            this.spriteElement.style.transform = 'scaleX(-1)';
+        } else {
+            this.spriteElement.style.transform = 'scaleX(1)';
+        }
+    }
+    
+    // Advance animation frame
+    updateAnimation(deltaTime) {
+        this.animationTimer += deltaTime;
+        
+        // If it's time for the next frame
+        if (this.animationTimer >= this.animationSpeed) {
+            // Reset timer and advance frame
+            this.animationTimer = 0;
+            this.animationFrame = (this.animationFrame + 1) % this.sprites[this.animationState].frames;
+            this.updateSpriteImage();
+        }
     }
     
     // Set up keyboard event listeners
@@ -73,11 +151,23 @@ class Player {
         if (this.keys.a) this.direction.x = -1;
         if (this.keys.d) this.direction.x = 1;
         
+        // Update facing direction based on movement
+        if (this.direction.x < 0) this.facing = 'left';
+        else if (this.direction.x > 0) this.facing = 'right';
+        
         // Normalize diagonal movement
         if (this.direction.x !== 0 && this.direction.y !== 0) {
             const factor = 1 / Math.sqrt(2);
             this.direction.x *= factor;
             this.direction.y *= factor;
+        }
+        
+        // Check if player is moving and update animation state
+        this.isMoving = (this.direction.x !== 0 || this.direction.y !== 0);
+        if (this.isMoving) {
+            this.setAnimation('walk');
+        } else {
+            this.setAnimation('idle');
         }
         
         // Calculate new position
@@ -131,6 +221,9 @@ class Player {
             this.element.style.left = `${this.x}px`;
             this.element.style.top = `${this.y}px`;
         }
+        
+        // Update animation frame
+        this.updateAnimation(deltaTime);
         
         // Update debug info
         updateDebugInfo(this);
