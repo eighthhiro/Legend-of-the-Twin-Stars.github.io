@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Pixel Game</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- House -->
+        <div class="house"></div>
+        <div class="house-roof"></div>
+        <div class="house-door"></div>
+        <div class="house-window" style="left: 340px; top: 270px;"></div>
+        <div class="house-window" style="left: 430px; top: 270px;"></div>
+        
+        <!-- Player will be added by JavaScript -->
+        
+        <!-- Trees, rocks, and bushes will be added by JavaScript -->
+        
+        <!-- UI Elements -->
+        <div id="game-ui">WASD to move</div>
+        <div id="message-box"></div>
+        <div id="debug-info">Position: 0,0</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/entities.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/world.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/collision.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>

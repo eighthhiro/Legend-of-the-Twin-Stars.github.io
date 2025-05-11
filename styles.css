@@ -1,0 +1,160 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Game container */
+#game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background-color: #5c925c; /* Forest floor color */
+    overflow: hidden;
+    border: 4px solid #654321;
+    image-rendering: pixelated;
+}
+
+/* Ground textures */
+.grass-texture {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-image: url(./assets/grass.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+/* Path styles */
+.path-tile {
+    position: absolute;
+    width: 56px;
+    height: 64px;
+    background-image: url(./assets/path.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 2;
+}
+
+.well {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    background-image: url(./assets/well.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 40;
+}
+
+/* Player character */
+.player {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-color: #ff0000;
+    transition: left 0.1s, top 0.1s;
+    z-index: 100;
+}
+
+/* House styles */
+.house {
+    position: absolute;
+    width: 120px;
+    height: 140px;
+    left: 320px;
+    top: 240px;
+    background-image: url(./assets/house.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    z-index: 50;
+}
+
+/* Tree placeholder */
+.tree {
+    position: absolute;
+    width: 50px;
+    height: 80px;
+    z-index: 40;
+    background-image: url(./assets/tree2.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+}
+
+/* Rock placeholder */
+.rock {
+    position: absolute;
+    width: 25px;
+    height: 15px;
+    background-image: url(./assets/rock.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    z-index: 30;
+}
+
+/* Bush placeholder */
+.bush {
+    position: absolute;
+    width: 35px;
+    height: 30px;
+    background-image: url(./assets/bush1.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: 50%;
+    z-index: 30;
+}
+
+/* UI elements */
+#game-ui {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    z-index: 200;
+}
+
+#debug-info {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 200;
+}
+
+/* Message box */
+#message-box {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+    z-index: 300;
+}
